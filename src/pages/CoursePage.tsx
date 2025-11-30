@@ -1,10 +1,13 @@
 import { useParams, Link } from 'react-router-dom';
 import { courseStructure } from '../data/courseStructure';
 import { FileText, File, Link as LinkIcon, Calendar } from 'lucide-react';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 export const CoursePage = () => {
   const { courseId } = useParams();
   const course = courseStructure.courses.find(c => c.id === courseId);
+
+  usePageTitle(course?.name || 'Course Not Found');
 
   if (!course) {
     return (

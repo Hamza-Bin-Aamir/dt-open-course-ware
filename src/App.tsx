@@ -36,7 +36,7 @@ function App() {
         </button>
 
         <Sidebar isOpen={sidebarOpen} onToggle={toggleSidebar} />
-        <main className="flex-1 lg:ml-80 transition-all duration-300">
+        <main className="flex-1 lg:ml-80 pt-16 lg:pt-0 transition-all duration-300">
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/" element={<HomePage />} />
