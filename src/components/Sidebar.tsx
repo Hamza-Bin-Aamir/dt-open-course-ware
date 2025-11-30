@@ -1,7 +1,13 @@
 import { Link, useParams, useLocation } from 'react-router-dom';
 import { courseStructure } from '../data/courseStructure';
-import { ChevronRight, ChevronDown, FileText, File, Link as LinkIcon, GraduationCap, X } from 'lucide-react';
+import { ChevronRight, ChevronDown, FileText, File, Link as LinkIcon, GraduationCap, X, Download } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
+
+// Type for the beforeinstallprompt event
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
 
 interface SidebarProps {
   isOpen: boolean;
@@ -13,6 +19,45 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   const location = useLocation();
   const [expandedWeeks, setExpandedWeeks] = useState<Record<string, boolean>>({});
   const isFirstRender = useRef(true);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [isInstalled, setIsInstalled] = useState(false);
+
+  // Listen for the beforeinstallprompt event
+  useEffect(() => {
+    // Check if already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setIsInstalled(true);
+      return;
+    }
+
+    const handler = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
+    };
+
+    window.addEventListener('beforeinstallprompt', handler);
+
+    // Listen for successful install
+    window.addEventListener('appinstalled', () => {
+      setIsInstalled(true);
+      setDeferredPrompt(null);
+    });
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler);
+    };
+  }, []);
+
+  const handleInstall = async () => {
+    if (!deferredPrompt) return;
+    
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    
+    if (outcome === 'accepted') {
+      setDeferredPrompt(null);
+    }
+  };
 
   // Close sidebar on mobile when route changes (but not on first render)
   useEffect(() => {
@@ -164,6 +209,19 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
             </div>
           ))}
         </nav>
+
+        {/* PWA Install Button */}
+        {deferredPrompt && !isInstalled && (
+          <div className="p-4 border-t border-slate-800">
+            <button
+              onClick={handleInstall}
+              className="w-full flex items-center justify-center gap-2 p-3 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium hover:from-purple-500 hover:to-blue-500 transition-all shadow-lg"
+            >
+              <Download className="w-5 h-5" />
+              Install App
+            </button>
+          </div>
+        )}
       </div>
     </>
   );
