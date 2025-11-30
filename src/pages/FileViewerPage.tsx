@@ -3,6 +3,7 @@ import { useState, useEffect, lazy, Suspense } from 'react';
 import { courseStructure } from '../data/courseStructure';
 import { loadMetadataCached } from '../utils/metadataLoader';
 import { AlertCircle, Loader2 } from 'lucide-react';
+import { usePageTitle } from '../hooks/usePageTitle';
 import type { FileMetadata } from '../types';
 
 // Lazy load viewer components - PDFViewer is especially heavy
@@ -31,6 +32,9 @@ export const FileViewerPage = () => {
   const fileIdx = fileIndex ? parseInt(fileIndex) : -1;
   const weekData = course?.weeks[weekIndex];
   const file = weekData?.files[fileIdx];
+
+  // Set page title based on file name
+  usePageTitle(file?.name || 'File Not Found');
 
   // Load metadata from .meta file
   useEffect(() => {
