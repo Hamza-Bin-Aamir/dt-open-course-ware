@@ -26,7 +26,7 @@ function App() {
 
   return (
     <Router>
-      <div className="flex min-h-screen bg-dark-900">
+      <div className="flex min-h-screen bg-slate-950">
         {/* Mobile menu button */}
         <button
           onClick={toggleSidebar}
@@ -36,7 +36,7 @@ function App() {
         </button>
 
         <Sidebar isOpen={sidebarOpen} onToggle={toggleSidebar} />
-        <main className="flex-1 lg:ml-80 pt-16 lg:pt-0 transition-all duration-300">
+        <main className="flex-1 lg:ml-80 pt-16 lg:pt-0 transition-all duration-300 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/" element={<HomePage />} />
