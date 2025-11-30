@@ -1,35 +1,53 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState, lazy, Suspense } from 'react';
+import { Menu, Loader2 } from 'lucide-react';
+import { Sidebar } from './components/Sidebar';
+import './App.css';
+
+// Lazy load pages for code splitting
+const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
+const CoursePage = lazy(() => import('./pages/CoursePage').then(m => ({ default: m.CoursePage })));
+const FileViewerPage = lazy(() => import('./pages/FileViewerPage').then(m => ({ default: m.FileViewerPage })));
+
+// Loading fallback component
+const PageLoader = () => (
+  <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
+    <div className="flex flex-col items-center gap-4">
+      <Loader2 className="w-12 h-12 text-purple-500 animate-spin" />
+      <p className="text-slate-400">Loading...</p>
+    </div>
+  </div>
+);
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => setSidebarOpen(prev => !prev);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <Router>
+      <div className="flex min-h-screen bg-dark-900">
+        {/* Mobile menu button */}
+        <button
+          onClick={toggleSidebar}
+          className="fixed top-4 left-4 z-30 p-2 rounded-lg bg-slate-800/90 backdrop-blur-sm text-slate-300 hover:text-white hover:bg-slate-700 lg:hidden shadow-lg border border-slate-700"
+        >
+          <Menu className="w-6 h-6" />
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+
+        <Sidebar isOpen={sidebarOpen} onToggle={toggleSidebar} />
+        <main className="flex-1 lg:ml-80 transition-all duration-300">
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/course/:courseId" element={<CoursePage />} />
+              <Route path="/course/:courseId/:week/:fileIndex" element={<FileViewerPage />} />
+            </Routes>
+          </Suspense>
+        </main>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;
