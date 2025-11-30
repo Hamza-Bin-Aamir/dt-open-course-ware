@@ -1,0 +1,50 @@
+{
+  "courses": [
+    {
+      "id": "DT101",
+      "name": "DT101 - Introduction to debate",
+      "weeks": [
+        {
+          "name": "Week 1",
+          "files": [
+            {
+              "name": "Handout: Introduction to the world of debate",
+              "path": "/courses/DT101 - Introduction to debate/Week 1/Handout_ [DB101-M1] Introduction to the world of debate.pdf",
+              "type": "pdf"
+            }
+          ]
+        },
+        {
+          "name": "Week 2",
+          "files": [
+            {
+              "name": "Debate Video Example",
+              "path": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+              "type": "link"
+            },
+            {
+              "name": "Handout: Motions",
+              "path": "/courses/DT101 - Introduction to debate/Week 2/Handout [DT101-M5] Motions.pdf",
+              "type": "pdf"
+            }
+          ]
+        },
+        {
+          "name": "Week 3",
+          "files": [
+            {
+              "name": "Handout: Cases I",
+              "path": "/courses/DT101 - Introduction to debate/Week 3/Handout [DT101-M6] Cases I.pdf",
+              "type": "pdf"
+            },
+            {
+              "name": "Handout: Cases II",
+              "path": "/courses/DT101 - Introduction to debate/Week 3/Handout [DT101-M7] Cases (1).pdf",
+              "type": "pdf"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
