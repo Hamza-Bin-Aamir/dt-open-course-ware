@@ -39,7 +39,23 @@
             },
             {
               "name": "Handout: Cases II",
-              "path": "/courses/DT101 - Introduction to debate/Week 3/Handout [DT101-M7] Cases (1).pdf",
+              "path": "/courses/DT101 - Introduction to debate/Week 3/Handout [DT101-M7] Cases II.pdf",
+              "type": "pdf"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DT102",
+      "name": "DT102 - WSDC Matches",
+      "weeks": [
+        {
+          "name": "Week 1",
+          "files": [
+            {
+              "name": "WSDC Speaker Roles",
+              "path": "/courses/DT102 - WSDC Matches/Week 1/WSDC Speaker Roles.pdf",
               "type": "pdf"
             }
           ]
